@@ -109,20 +109,103 @@ const library = [
 
 //Escribe aquí tu solución / escriviu aquí la vostra solució:
 /********************* EX1 */
+class magicBook{
+  constructor(title, author, genre, yearPublished, available){
+    this.title = title;
+    this.author = author;
+    this.genre = genre;
+    this.yearPublished = yearPublished;
+    this.available = available; 
+    this.magicSeal = magicBook.generateMagicSeal(this.title,this.author);
+  }
+  toggleAvailability(){
+    this.available = !this.available;
+  }
+  static generateMagicSeal(title, author){
+    const ti = title.substring(0, 2);
+    const or = author.slice(-2);
+    const magic = ti + or;
+    return magic.toUpperCase() + "MAGIC";
+  }
+}
 
 /********************* EX2 */
+const mysticalBooks = library.map(book => 
+    magicBook.generateMagicSeal(book.title, book.author)
+);
 
 /********************* EX3 */
-
+const fantasyBooksAfter1950 = library.filter(book => 
+    book.genre === "Fantasy" && book.yearPublished > 1950
+);
 /********************* EX4 */
+function recursiveOracle(books, index=0) {
+    if (index >= books.length) {
+        return 0;
+    }
+    let counter = 0;
+    if (books[index].available) {
+        counter = 1;
+    }
+    return counter + recursiveOracle(books, index + 1);
+}
 
 /********************* EX5 */
+function compareBooks(library) {
+
+    function findMostRecentBook(library) {
+        let mostRecent = library[0]; // empezamos con el primero
+        for (let i = 1; i < library.length; i++) {
+            if (library[i].yearPublished > mostRecent.yearPublished) {
+                mostRecent = library[i];
+            }
+        }
+        return mostRecent;
+    }
+
+    function findLongestTitleBook(library) {
+        let longest = library[0]; // empezamos con el primero
+        for (let i = 1; i < library.length; i++) {
+            if (library[i].title.length > longest.title.length) {
+                longest = library[i];
+            }
+        }
+        return longest;
+    }
+
+    return [findMostRecentBook(library), findLongestTitleBook(library)];
+}
 
 /********************* EX6 */
+function earliestPublication(...books){
+  let mostOld = books[0]; // empezamos con el primero
+  for (let i = 1; i < books.length; i++) {
+      if (books[i].yearPublished < mostOld.yearPublished) {
+          mostOld = books[i];
+      }
+  }
+  return mostOld;
+}
 
 /********************* EX7 */
+const clonedLibrary = [...library];
+
+const newBook = { 
+    title: "Don Quixote", 
+    author: "Miguel de Cervantes", 
+    genre: "Classic", 
+    yearPublished: 1605, 
+    available: true 
+};
+
+clonedLibrary.push(newBook);
 
 /********************* EX8 */
+function invokeSerialization(book){
+  return JSON.stringify(book);
+}
+
+const serializedBook = invokeSerialization(library[0]);
 
 /**
  * TEST
